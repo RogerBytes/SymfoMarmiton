@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ingredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,6 +17,11 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
+    public function findAllQueries(): Query
+    {
+        return $this->createQueryBuilder('i')
+            ->getQuery();
+    }
     //    /**
     //     * @return Ingredient[] Returns an array of Ingredient objects
     //     */
