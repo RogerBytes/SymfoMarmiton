@@ -20,29 +20,24 @@ class IngredientType extends AbstractType
             ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlength' => 2,
-                    'maxlength' => 50
                 ],
                 'label' => 'Nom',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(min: 2, max: 50),
                     new Assert\NotBlank()
                 ]
             ])
             ->add('price', MoneyType::class, [
+                'currency' => false, // supprime le €
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Prix ',
+                'label' => 'Prix',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
-                'constraints' => [
-                    new Assert\Positive(),
-                ]
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

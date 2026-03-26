@@ -22,15 +22,15 @@ class Ingredient
     #[Assert\Length(
         min: 2,
         max: 50,
-        minMessage: 'Your first name must be at least {{ limit }} characters long',
-        maxMessage: 'Your first name cannot be longer than {{ limit }} characters'
+        minMessage: 'Votre nom doit faire minimum {{ limit }} caractères en longueur',
+        maxMessage: 'Votre nom doit faire maximum {{ limit }} caractères en longueur'
     )]
     private ?string $name = null;
 
 
     #[ORM\Column]
-    #[Assert\Positive]
-    #[Assert\LessThan(200)]
+    #[Assert\Positive(message: "Le prix doit être un nombre positif")]
+    #[Assert\LessThan(value: 200, message: "Le prix doit être inférieur à {{ compared_value }}.")]
     #[Assert\NotNull]
     private ?float $price = null;
 

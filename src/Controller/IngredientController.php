@@ -25,19 +25,26 @@ final class IngredientController extends AbstractController
      */
     public function index(IngredientRepository $ingredientRepository, PaginatorInterface $paginator, Request $request): Response
     {
-    $ingredients = $paginator->paginate(
-        $ingredientRepository->findAllQueries(),
-        $request->query->getInt('page', 1),
-        10
+        $ingredients = $paginator->paginate(
+            $ingredientRepository->findAllQueries(),
+            $request->query->getInt('page', 1),
+            10
         );
+
         return $this->render('pages/ingredient/index.html.twig', [
             'ingredients' => $ingredients,
         ]);
     }
 
-
+    /**
+     * This controller show the form to add an ingredient
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/ingredient/nouveau', name: 'app_ingredient_new')]
-    public function new(Request $request, EntityManagerInterface $em):Response
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
@@ -48,6 +55,11 @@ final class IngredientController extends AbstractController
             $em->persist($ingredient);
             $em->flush();
 
+            $this->addFlash(
+                'success',
+                'Votre ingrédient a été créé avec succès !'
+            );
+
             return $this->redirectToRoute('app_ingredient');
         }
 
@@ -55,4 +67,11 @@ final class IngredientController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/ingredient/edition/{id}', 'app_ingredient_edit', methods:['GET', ['POST']] )]
+    public function edit(): Response
+    {
+        return $this->render('pages/ingredient/edit.html.twig');
+    }
+
 }
